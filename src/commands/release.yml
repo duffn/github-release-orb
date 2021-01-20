@@ -25,7 +25,7 @@ parameters:
     type: string
     default: "1.6"
     description: >
-      The version of jq to use to generate the release request for GitHub. 
+      The version of jq to use to generate the release request for GitHub.
       You may not want to change this.
 
 steps:
