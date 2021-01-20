@@ -1,0 +1,41 @@
+description: >
+  This command creates a new tag and a corresponding GitHub release.
+
+parameters:
+  release:
+    type: boolean
+    default: true
+    description: Create a GitHub release. If false, only create a tag.
+  organization:
+    type: string
+    description: The name of your GitHub user or organization.
+  git_user_name:
+    type: string
+    default: "CircleCI user"
+    description: The name of your git user.
+  git_user_email:
+    type: string
+    default: "circleciuser@example.com"
+    description: The email of your git user.
+  changelog:
+    type: boolean
+    default: true
+    description: Include a changelog in the body of your GitHub release.
+  jq_version:
+    type: string
+    default: "1.6"
+    description: >
+      The version of jq to use to generate the release request for GitHub. 
+      You may not want to change this.
+
+steps:
+  - run:
+      environment:
+        RELEASE: << parameters.release >>
+        ORGANIZATION: << parameters.organization >>
+        GIT_USER_NAME: << parameters.git_user_name >>
+        GIT_USER_EMAIL: << parameters.git_user_email >>
+        CHANGELOG: << parameters.changelog >>
+        JQ_VERSION: << parameters.jq_verision >>
+      name: Create a GitHub release
+      command: << include(scripts/release.sh) >>
