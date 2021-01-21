@@ -85,6 +85,7 @@ check_increment() {
   local response
   response="yes"
 
+  echo "Semver increment in check: $semver_increment"
   if [ -z "$semver_increment" ]; then
     echo "Commit subject did not indicate which SemVer increment to make."
     echo "To create the tag and release, you can ammend the commit or push another commit with [semver:INCREMENT] in the subject where INCREMENT is major, minor, patch."
