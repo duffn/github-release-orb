@@ -12,7 +12,7 @@ main() {
 
   semver_version="3.2.0"
   wget -qO- "https://github.com/fsaintjacques/semver-tool/archive/$semver_version.tar.gz" | tar xzvf -
-  sudo cp "$semver_version/src/semver" /usr/local/bin
+  sudo cp "semver-tool-$semver_version/src/semver" /usr/local/bin
 
   if [ -z "$(git tag)" ]; then
     # We'll call the first tag 0.1.0 somewhat arbitrarily.
