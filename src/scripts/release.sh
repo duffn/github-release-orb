@@ -38,7 +38,7 @@ tag_commit() {
   git push
   git push --tags
 
-  if [ "$RELEASE" = true ]; then
+  if [ "$RELEASE" == "true" ]; then
     release_github "$new_tag"
   fi
 }
@@ -49,7 +49,7 @@ release_github() {
   local json
 
   release_changelog=""
-  if [ "$CHANGELOG" = true ]; then
+  if [ "$CHANGELOG" == "true" ]; then
     release_changelog=$(git log --pretty=format:'* %s (%h)' "$last_tag"..HEAD)
   fi
 
