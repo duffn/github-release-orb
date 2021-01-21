@@ -79,6 +79,12 @@ check_for_envs() {
     echo "With the release parameter set to true, you must set a GITHUB_TOKEN environment variable."
     exit 1
   fi
+
+  if [ "$(id -u)" == 0 ]; then 
+    export SUDO=""
+  else 
+    export SUDO="sudo"
+  fi
 }
 
 check_for_programs() {
@@ -94,7 +100,7 @@ download_programs() {
     echo "Installing semver version $semver_version"
     wget -qO- "https://github.com/fsaintjacques/semver-tool/archive/$semver_version.tar.gz" | tar xzf -
     chmod +x "semver-tool-$semver_version/src/semver"
-    sudo cp "semver-tool-$semver_version/src/semver" /usr/local/bin
+    "$SUDO" cp "semver-tool-$semver_version/src/semver" /usr/local/bin
   fi
 
   if ! command -v jq &> /dev/null; then
@@ -102,7 +108,7 @@ download_programs() {
     echo "Installing jq version $jq_version"
     wget -qO jq "https://github.com/stedolan/jq/releases/download/jq-$jq_version/jq-linux$arch"
     chmod +x jq
-    sudo cp jq /usr/local/bin
+    "$SUDO" cp jq /usr/local/bin
   fi
 }
 
