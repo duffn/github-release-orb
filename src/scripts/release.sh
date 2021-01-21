@@ -20,6 +20,8 @@ tag_commit() {
   local new_tag
   new_tag="$1"
 
+  echo "Creating tag $new_tag."
+
   git tag "$new_tag"
   git push --tags
 
@@ -62,10 +64,13 @@ release_github() {
 
   curl \
     -X POST \
+    -S -s -o /dev/null \
     -H "Authorization: token $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     -d "$json" \
     "https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/releases"
+  
+  echo "Release $new_tag created."
 }
 
 check_for_envs() {
@@ -86,13 +91,15 @@ check_for_programs() {
 download_programs() {
   if ! command -v semver &> /dev/null; then
     semver_version="3.2.0"
-    wget -qO- "https://github.com/fsaintjacques/semver-tool/archive/$semver_version.tar.gz" | tar xzvf -
+    echo "Installing semver version $semver_version"
+    wget -qO- "https://github.com/fsaintjacques/semver-tool/archive/$semver_version.tar.gz" | tar xzf -
     chmod +x "semver-tool-$semver_version/src/semver"
     sudo cp "semver-tool-$semver_version/src/semver" /usr/local/bin
   fi
 
   if ! command -v jq &> /dev/null; then
     jq_version="1.6"
+    echo "Installing jq version $jq_version"
     wget -qO jq "https://github.com/stedolan/jq/releases/download/jq-$jq_version/jq-linux$arch"
     chmod +x jq
     sudo cp jq /usr/local/bin
