@@ -6,9 +6,6 @@ parameters:
     type: boolean
     default: true
     description: Create a GitHub release. If false, only create a tag.
-  organization:
-    type: string
-    description: The name of your GitHub user or organization.
   git_user_name:
     type: string
     default: "CircleCI user"
@@ -32,7 +29,6 @@ steps:
   - run:
       environment:
         RELEASE: << parameters.release >>
-        ORGANIZATION: << parameters.organization >>
         GIT_USER_NAME: << parameters.git_user_name >>
         GIT_USER_EMAIL: << parameters.git_user_email >>
         CHANGELOG: << parameters.changelog >>

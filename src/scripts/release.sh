@@ -1,10 +1,3 @@
-#!/bin/bash
-
-if [ -z "$ORGANIZATION" ]; then
-  echo "You must provide the organization parameter to this command."
-  exit 1
-fi
-
 if [ -n "$RELEASE" ] && [ -z "$GITHUB_TOKEN" ]; then
   echo "With the release parameter set to true, you must set a GITHUB_TOKEN environment variable."
   exit 1
@@ -84,7 +77,7 @@ release_github() {
     -H "Authorization: token $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     -d "$json" \
-    "https://api.github.com/repos/$ORGANIZATION/$CIRCLE_PROJECT_REPONAME/releases"
+    "https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/releases"
 }
 
 # Will not run if sourced for bats-core tests.
