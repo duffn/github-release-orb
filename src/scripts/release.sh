@@ -6,8 +6,7 @@ main() {
   git config --global user.name "$GIT_USER_NAME"
 
   if [ -z "$(git tag)" ]; then
-    echo "You do not yet have a tag in this repository. Creating 0.1.0 as the first tag."
-    last_tag="0.1.0"
+    last_tag="0.0.0"
   else
     last_tag=$(git describe --tags --abbrev=0)
   fi
