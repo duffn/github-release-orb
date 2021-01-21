@@ -33,4 +33,7 @@ steps:
         CHANGELOG: "<< parameters.changelog >>"
         BUMP: "<< parameters.bump >>"
       name: Create a GitHub release
-      command: << include(scripts/release.sh) >>
+      command: |
+        echo "$RELEASE"
+        echo "$CHANGELOG"
+        echo "$bump"
