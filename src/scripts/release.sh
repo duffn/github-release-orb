@@ -82,15 +82,18 @@ get_semver_increment() {
 }
 
 check_increment() {
-  response="no"
+  local response
+  response="yes"
+
   if [ -z "$semver_increment" ]; then
     echo "Commit subject did not indicate which SemVer increment to make."
     echo "To create the tag and release, you can ammend the commit or push another commit with [semver:FOO] in the subject where FOO is major, minor, patch."
     echo "Note: To indicate intention to skip, include [semver:skip] in the commit subject instead."
+    response="no"
   elif [ "$semver_increment" == "skip" ]; then
     echo "SemVer in commit indicated to skip release."
-  else
-    response="yes"
+    # shellcheck disable=SC2034
+    response="no"
   fi
   echo response
 }
