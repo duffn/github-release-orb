@@ -3,11 +3,6 @@ if [ "$RELEASE" == "1" ] && [ -z "$GITHUB_TOKEN" ]; then
   exit 1
 fi
 
-echo "FFFFFF"
-echo "$RELEASE"
-echo "$CHANGELOG"
-echo "$BUMP"
-
 main() {
   local last_tag
   local new_tag
@@ -40,8 +35,6 @@ tag_commit() {
   git tag "$new_tag"
   git push --tags
 
-  echo "What"
-  echo "$RELEASE"
   if [ "$RELEASE" == "1" ]; then
     release_github "$new_tag"
   fi
