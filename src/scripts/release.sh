@@ -88,7 +88,7 @@ check_increment() {
 
   if [ -z "$semver_increment" ]; then
     echo "Commit subject did not indicate which SemVer increment to make."
-    echo "To create the tag and release, you can ammend the commit or push another commit with [semver:FOO] in the subject where FOO is major, minor, patch."
+    echo "To create the tag and release, you can ammend the commit or push another commit with [semver:INCREMENT] in the subject where INCREMENT is major, minor, patch."
     echo "Note: To indicate intention to skip, include [semver:skip] in the commit subject instead."
     response="no"
   elif [ "$semver_increment" == "skip" ]; then
@@ -99,7 +99,6 @@ check_increment() {
 }
 
 check_for_envs() {
-  echo "Release: $RELEASE"
   if [ "$RELEASE" == "1" ] && [ -z "$GITHUB_TOKEN" ]; then
     echo "The GITHUB_TOKEN environment variable is not set."
     echo "With the release parameter set to true, you must set a GITHUB_TOKEN environment variable."
@@ -143,7 +142,8 @@ download_programs() {
 ORB_TEST_ENV="bats-core"
 if [ "${0#*$ORB_TEST_ENV}" == "$0" ]; then
   get_semver_increment
-  if [ "$(check_increment)" == "yes" ]; then
+  increment=$(check_increment)
+  if [ "$increment" == "yes" ]; then
     check_for_envs
     check_for_programs
     download_programs
