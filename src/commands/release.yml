@@ -31,7 +31,6 @@ steps:
         GIT_USER_NAME: "<< parameters.git_user_name >>"
         GIT_USER_EMAIL: "<< parameters.git_user_email >>"
         CHANGELOG: "<< parameters.changelog >>"
-        JQ_VERSION: "<< parameters.jq_version >>"
         BUMP: "<< parameters.bump >>"
       name: Create a GitHub release
       command: << include(scripts/release.sh) >>
