@@ -84,7 +84,7 @@ check_for_programs() {
 }
 
 download_programs() {
-  if ! command -v curl &> /dev/null; then
+  if ! command -v semver &> /dev/null; then
     semver_version="3.2.0"
     wget -qO- "https://github.com/fsaintjacques/semver-tool/archive/$semver_version.tar.gz" | tar xzvf -
     chmod +x "semver-tool-$semver_version/src/semver"
