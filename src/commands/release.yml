@@ -18,12 +18,11 @@ parameters:
     type: boolean
     default: true
     description: Include a changelog in the body of your GitHub release.
-  jq_version:
-    type: string
-    default: "1.6"
-    description: >
-      The version of jq to use to generate the release request for GitHub.
-      You may not want to change this.
+  bump:
+    type: enum
+    default: "minor"
+    description: How to bump the version tag. One of "major", "minor", or "patch".
+    enum: ["major", "minor", "patch"]
 
 steps:
   - run:
@@ -33,5 +32,6 @@ steps:
         GIT_USER_EMAIL: "<< parameters.git_user_email >>"
         CHANGELOG: "<< parameters.changelog >>"
         JQ_VERSION: "<< parameters.jq_version >>"
+        BUMP: "<< parameters.bump >>"
       name: Create a GitHub release
       command: << include(scripts/release.sh) >>

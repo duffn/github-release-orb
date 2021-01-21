@@ -10,12 +10,13 @@ main() {
   git config --global user.email "$GIT_USER_EMAIL"
   git config --global user.name "$GIT_USER_NAME"
 
-  # TODO: We're assuming here that the tag is X.X.X semver and that we already have a tag.
+  semver_version="3.2.0"
+  wget -qO- "https://github.com/fsaintjacques/semver-tool/archive/$semver_version.tar.gz" | tar xvf -
+  sudo cp "$semver_version/src/semver" /usr/local/bin
+
+  # TODO: We're assuming here that we already have a tag.
   last_tag=$(git describe --tags --abbrev=0)
-  IFS='.' read -ra version <<< "$last_tag"
-  # shellcheck disable=SC2004
-  # TODO: Allow major, minor, patch bumps.
-  new_tag="${version[0]}.$((${version[1]} + 1)).0"
+  new_tag=$(semver bump "$BUMP" "$last_tag")
 
   tag_commit "$new_tag"
 }
@@ -50,7 +51,8 @@ release_github() {
     arch="32"
   fi
 
-  wget -qO jq https://github.com/stedolan/jq/releases/download/jq-"$JQ_VERSION"/jq-linux"$arch"
+  jq_version="1.6"
+  wget -qO jq https://github.com/stedolan/jq/releases/download/jq-"$jq_version"/jq-linux"$arch"
   chmod +x jq
   sudo mv jq /usr/local/bin
 
