@@ -79,6 +79,7 @@ get_semver_increment() {
   semver_increment=$(echo "$commit_subject" | sed -En 's/.*\[semver:(major|minor|patch|skip)\].*/\1/p')
 
   echo "Commit subject: $commit_subject"
+  echo "SemVer increment: $semver_increment"
 }
 
 check_increment() {
@@ -142,7 +143,9 @@ download_programs() {
 ORB_TEST_ENV="bats-core"
 if [ "${0#*$ORB_TEST_ENV}" == "$0" ]; then
   get_semver_increment
-  if [ "$(check_increment)" == "yes" ]; then
+  increment=$(check_increment)
+  echo "$increment"
+  if [ "$increment" == "yes" ]; then
     check_for_envs
     check_for_programs
     download_programs
