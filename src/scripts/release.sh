@@ -34,6 +34,8 @@ tag_commit() {
   git tag "$new_tag"
   git push --tags
 
+  echo "What"
+  echo "$RELEASE"
   if [ "$RELEASE" == "true" ]; then
     release_github "$new_tag"
   fi
