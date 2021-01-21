@@ -99,6 +99,7 @@ check_increment() {
 }
 
 check_for_envs() {
+  echo "Release: $RELEASE"
   if [ "$RELEASE" == "1" ] && [ -z "$GITHUB_TOKEN" ]; then
     echo "The GITHUB_TOKEN environment variable is not set."
     echo "With the release parameter set to true, you must set a GITHUB_TOKEN environment variable."
@@ -142,9 +143,7 @@ download_programs() {
 ORB_TEST_ENV="bats-core"
 if [ "${0#*$ORB_TEST_ENV}" == "$0" ]; then
   get_semver_increment
-  increment=$(check_increment)
-  echo "$increment"
-  if [ "$increment" == "yes" ]; then
+  if [ "$(check_increment)" == "yes" ]; then
     check_for_envs
     check_for_programs
     download_programs
