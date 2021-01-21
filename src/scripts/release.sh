@@ -1,7 +1,12 @@
-if [ -n "$RELEASE" ] && [ -z "$GITHUB_TOKEN" ]; then
+if [ "$RELEASE" == "true" ] && [ -z "$GITHUB_TOKEN" ]; then
   echo "With the release parameter set to true, you must set a GITHUB_TOKEN environment variable."
   exit 1
 fi
+
+echo "FFFFFF"
+echo "$RELEASE"
+echo "$CHANGELOG"
+echo "$BUMP"
 
 main() {
   local last_tag
@@ -12,6 +17,7 @@ main() {
 
   semver_version="3.2.0"
   wget -qO- "https://github.com/fsaintjacques/semver-tool/archive/$semver_version.tar.gz" | tar xzvf -
+  chmod +x "semver-tool-$semver_version/src/semver"
   sudo cp "semver-tool-$semver_version/src/semver" /usr/local/bin
 
   if [ -z "$(git tag)" ]; then
@@ -59,9 +65,9 @@ release_github() {
   fi
 
   jq_version="1.6"
-  wget -qO jq https://github.com/stedolan/jq/releases/download/jq-"$jq_version"/jq-linux"$arch"
+  wget -qO jq "https://github.com/stedolan/jq/releases/download/jq-$jq_version/jq-linux$arch"
   chmod +x jq
-  sudo mv jq /usr/local/bin
+  sudo cp jq /usr/local/bin
 
   json=$(jq -n \
     --arg tag_name "$new_tag" \

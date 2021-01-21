@@ -1,5 +1,5 @@
 description: >
-  This command creates a new tag and a corresponding GitHub release.
+  This command creates a new git tag and a corresponding GitHub release.
 
 parameters:
   release:
