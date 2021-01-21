@@ -14,8 +14,13 @@ main() {
   wget -qO- "https://github.com/fsaintjacques/semver-tool/archive/$semver_version.tar.gz" | tar xvf -
   sudo cp "$semver_version/src/semver" /usr/local/bin
 
-  # TODO: We're assuming here that we already have a tag.
-  last_tag=$(git describe --tags --abbrev=0)
+  if [ -z "$(git tag)" ]; then
+    # We'll call the first tag 0.1.0 somewhat arbitrarily.
+    echo "You do not yet have a tag in this repository. Creating 0.1.0 as the first tag."
+    last_tag="0.1.0"
+  else
+    last_tag=$(git describe --tags --abbrev=0)
+  fi
   new_tag=$(semver bump "$BUMP" "$last_tag")
 
   tag_commit "$new_tag"
