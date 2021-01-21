@@ -18,11 +18,6 @@ parameters:
     type: boolean
     default: true
     description: Include a changelog in the body of your GitHub release.
-  bump:
-    type: enum
-    default: "minor"
-    description: How to bump the version tag. One of "major", "minor", or "patch".
-    enum: ["major", "minor", "patch"]
 
 steps:
   - run:
@@ -31,6 +26,5 @@ steps:
         GIT_USER_NAME: "<< parameters.git_user_name >>"
         GIT_USER_EMAIL: "<< parameters.git_user_email >>"
         CHANGELOG: "<< parameters.changelog >>"
-        BUMP: "<< parameters.bump >>"
       name: Create a GitHub release
       command: << include(scripts/release.sh) >>

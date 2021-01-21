@@ -11,7 +11,7 @@ main() {
   else
     last_tag=$(git describe --tags --abbrev=0)
   fi
-  new_tag=$(semver bump "$BUMP" "$last_tag")
+  new_tag=$(semver bump "$semver_increment" "$last_tag")
 
   tag_commit "$new_tag"
 }
@@ -73,6 +73,28 @@ release_github() {
   echo "Release $new_tag created."
 }
 
+get_semver_increment() {
+  local commit_subject
+  commit_subject=$(git log -1 --pretty=%s.)
+  semver_increment=$(echo "$commit_subject" | sed -En 's/.*\[semver:(major|minor|patch|skip)\].*/\1/p')
+
+  echo "Commit subject: $commit_subject"
+}
+
+check_increment() {
+  response="no"
+  if [ -z "$semver_increment" ]; then
+    echo "Commit subject did not indicate which SemVer increment to make."
+    echo "To create the tag and release, you can ammend the commit or push another commit with [semver:FOO] in the subject where FOO is major, minor, patch."
+    echo "Note: To indicate intention to skip, include [semver:skip] in the commit subject instead."
+  elif [ "$semver_increment" == "skip" ]; then
+    echo "SemVer in commit indicated to skip release."
+  else
+    response="yes"
+  fi
+  echo response
+}
+
 check_for_envs() {
   if [ "$RELEASE" == "1" ] && [ -z "$GITHUB_TOKEN" ]; then
     echo "The GITHUB_TOKEN environment variable is not set."
@@ -116,8 +138,11 @@ download_programs() {
 # View src/tests for more information.
 ORB_TEST_ENV="bats-core"
 if [ "${0#*$ORB_TEST_ENV}" == "$0" ]; then
-  check_for_envs
-  check_for_programs
-  download_programs
-  main
+  get_semver_increment
+  if [ "$(check_increment)" == "yes" ]; then
+    check_for_envs
+    check_for_programs
+    download_programs
+    main
+  fi
 fi
