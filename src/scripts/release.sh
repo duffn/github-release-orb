@@ -93,10 +93,9 @@ check_increment() {
     response="no"
   elif [ "$semver_increment" == "skip" ]; then
     echo "SemVer in commit indicated to skip release."
-    # shellcheck disable=SC2034
     response="no"
   fi
-  echo response
+  echo "$response"
 }
 
 check_for_envs() {
