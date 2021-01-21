@@ -11,7 +11,7 @@ main() {
   git config --global user.name "$GIT_USER_NAME"
 
   semver_version="3.2.0"
-  wget -qO- "https://github.com/fsaintjacques/semver-tool/archive/$semver_version.tar.gz" | tar xvf -
+  wget -qO- "https://github.com/fsaintjacques/semver-tool/archive/$semver_version.tar.gz" | tar xzvf -
   sudo cp "$semver_version/src/semver" /usr/local/bin
 
   if [ -z "$(git tag)" ]; then
