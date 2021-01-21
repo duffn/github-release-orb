@@ -1,4 +1,4 @@
-if [ "$RELEASE" == "true" ] && [ -z "$GITHUB_TOKEN" ]; then
+if [ "$RELEASE" == "1" ] && [ -z "$GITHUB_TOKEN" ]; then
   echo "With the release parameter set to true, you must set a GITHUB_TOKEN environment variable."
   exit 1
 fi
@@ -42,7 +42,7 @@ tag_commit() {
 
   echo "What"
   echo "$RELEASE"
-  if [ "$RELEASE" == "true" ]; then
+  if [ "$RELEASE" == "1" ]; then
     release_github "$new_tag"
   fi
 }
@@ -53,7 +53,7 @@ release_github() {
   local json
 
   release_changelog=""
-  if [ "$CHANGELOG" == "true" ]; then
+  if [ "$CHANGELOG" == "1" ]; then
     release_changelog=$(git log --pretty=format:'* %s (%h)' "$last_tag"..HEAD)
   fi
 
