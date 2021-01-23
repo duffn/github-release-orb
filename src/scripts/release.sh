@@ -30,7 +30,7 @@ release_github() {
 
   json=$(jq -n \
     --arg tag_name "$new_tag" \
-    --arg target_commitish "$COMMITISH" \
+    --arg target_commitish "$CIRCLE_SHA1" \
     --arg name "Release $new_tag" \
     --arg body "$release_changelog" \
     '{

@@ -6,15 +6,10 @@ parameters:
     type: boolean
     default: true
     description: Include a changelog in the body of your GitHub release.
-  commitish:
-    type: string
-    default: $CIRCLE_SHA1
-    description: The branch or commit to create the release from.
 
 steps:
   - run:
       environment:
         CHANGELOG: "<< parameters.changelog >>"
-        COMMITISH: << parameters.commitish >>
       name: Create a GitHub release
       command: << include(scripts/release.sh) >>
