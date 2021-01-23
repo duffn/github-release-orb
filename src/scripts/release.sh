@@ -43,10 +43,9 @@ release_github() {
     }'
   )
 
-  echo "$json"
-
   curl \
     -X POST \
+    -S -s -o /dev/null \
     -H "Authorization: token $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     -d "$json" \
