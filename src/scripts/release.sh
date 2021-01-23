@@ -79,18 +79,18 @@ check_for_envs() {
     echo "You must set a GITHUB_TOKEN environment variable."
     exit 1
   fi
-
-  if [ "$(id -u)" == 0 ]; then 
-    export SUDO=""
-  else 
-    export SUDO="sudo"
-  fi
 }
 
 check_for_programs() {
   if ! command -v curl &> /dev/null; then
     echo "You must have curl installed to use this orb."
     exit 1
+  fi
+
+  if [ "$(id -u)" == 0 ]; then 
+    export SUDO=""
+  else 
+    export SUDO="sudo"
   fi
 
   if ! command -v semver &> /dev/null; then
