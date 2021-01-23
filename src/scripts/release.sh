@@ -22,11 +22,13 @@ release_github() {
     release_changelog=$(git log --pretty=format:'* %s (%h)' "$last_tag"..HEAD)
   fi
 
-  if [ "$(uname -m)" = "x86_64" ]; then
+  if [ "$(uname -m)" == "x86_64" ]; then
     arch="64"
   else
     arch="32"
   fi
+
+  echo "GGGGGGGGGGG"
 
   json=$(jq -n \
     --arg tag_name "$new_tag" \
@@ -82,9 +84,9 @@ check_increment() {
 }
 
 check_for_envs() {
-  if [ "$RELEASE" == "1" ] && [ -z "$GITHUB_TOKEN" ]; then
+  if [ -z "$GITHUB_TOKEN" ]; then
     echo "The GITHUB_TOKEN environment variable is not set."
-    echo "With the release parameter set to true, you must set a GITHUB_TOKEN environment variable."
+    echo "You must set a GITHUB_TOKEN environment variable."
     exit 1
   fi
 
@@ -123,9 +125,8 @@ check_for_programs() {
 ORB_TEST_ENV="bats-core"
 if [ "${0#*$ORB_TEST_ENV}" == "$0" ]; then
   get_semver_increment
-  increment=$(check_increment)
-  echo "$increment"
   if [ "$(check_increment)" == "yes" ]; then
+    echo "FFFFFFFFF"
     check_for_envs
     check_for_programs
     main
