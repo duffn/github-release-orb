@@ -15,6 +15,6 @@ steps:
   - run:
       environment:
         CHANGELOG: "<< parameters.changelog >>"
-        COMMITISH: "<< parameters.commitish >>"
+        COMMITISH: << parameters.commitish >>
       name: Create a GitHub release
       command: << include(scripts/release.sh) >>

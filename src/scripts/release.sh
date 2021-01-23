@@ -28,8 +28,6 @@ release_github() {
     arch="32"
   fi
 
-  echo "GGGGGGGGGGG"
-
   json=$(jq -n \
     --arg tag_name "$new_tag" \
     --arg target_commitish "$COMMITISH" \
@@ -125,7 +123,6 @@ ORB_TEST_ENV="bats-core"
 if [ "${0#*$ORB_TEST_ENV}" == "$0" ]; then
   get_semver_increment
   if [ "$(check_increment)" == "yes" ]; then
-    echo "FFFFFFFFF"
     check_for_envs
     check_for_programs
     main
