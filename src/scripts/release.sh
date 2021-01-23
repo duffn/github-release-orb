@@ -2,9 +2,6 @@ main() {
   local last_tag
   local new_tag
 
-  git config --global user.email "$GIT_USER_EMAIL"
-  git config --global user.name "$GIT_USER_NAME"
-
   if [ -z "$(git tag)" ]; then
     last_tag="0.0.0"
   else
@@ -12,21 +9,7 @@ main() {
   fi
   new_tag=$(semver bump "$semver_increment" "$last_tag")
 
-  tag_commit "$new_tag"
-}
-
-tag_commit() {
-  local new_tag
-  new_tag="$1"
-
-  echo "Creating tag $new_tag."
-
-  git tag "$new_tag"
-  git push --tags
-
-  if [ "$RELEASE" == "1" ]; then
-    release_github "$new_tag"
-  fi
+  release_github "$new_tag"
 }
 
 release_github() {
@@ -48,7 +31,7 @@ release_github() {
 
   json=$(jq -n \
     --arg tag_name "$new_tag" \
-    --arg target_commitish "$CIRCLE_BRANCH" \
+    --arg target_commitish "$COMMITISH" \
     --arg name "Release $new_tag" \
     --arg body "$release_changelog" \
     '{
@@ -117,9 +100,7 @@ check_for_programs() {
     echo "You must have curl installed to use this orb."
     exit 1
   fi
-}
 
-download_programs() {
   if ! command -v semver &> /dev/null; then
     semver_version="3.2.0"
     echo "Installing semver version $semver_version"
@@ -142,11 +123,9 @@ download_programs() {
 ORB_TEST_ENV="bats-core"
 if [ "${0#*$ORB_TEST_ENV}" == "$0" ]; then
   get_semver_increment
-  increment=$(check_increment)
-  if [ "$increment" == "yes" ]; then
+  if [ "$(check_increment)" == "yes" ]; then
     check_for_envs
     check_for_programs
-    download_programs
     main
   fi
 fi
