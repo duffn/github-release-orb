@@ -22,7 +22,6 @@ release_github() {
     release_changelog=$(git log --pretty=format:'* %s (%h)' "$last_tag"..HEAD)
   fi
 
-  # We need jq for the below.
   if [ "$(uname -m)" = "x86_64" ]; then
     arch="64"
   else
@@ -44,9 +43,10 @@ release_github() {
     }'
   )
 
+  echo "$json"
+
   curl \
     -X POST \
-    -S -s -o /dev/null \
     -H "Authorization: token $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     -d "$json" \
@@ -123,6 +123,8 @@ check_for_programs() {
 ORB_TEST_ENV="bats-core"
 if [ "${0#*$ORB_TEST_ENV}" == "$0" ]; then
   get_semver_increment
+  increment=$(check_increment)
+  echo "$increment"
   if [ "$(check_increment)" == "yes" ]; then
     check_for_envs
     check_for_programs
