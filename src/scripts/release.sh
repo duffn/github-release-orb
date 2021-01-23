@@ -22,12 +22,6 @@ release_github() {
     release_changelog=$(git log --pretty=format:'* %s (%h)' "$last_tag"..HEAD)
   fi
 
-  if [ "$(uname -m)" == "x86_64" ]; then
-    arch="64"
-  else
-    arch="32"
-  fi
-
   json=$(jq -n \
     --arg tag_name "$new_tag" \
     --arg target_commitish "$CIRCLE_SHA1" \
@@ -110,6 +104,13 @@ check_for_programs() {
   if ! command -v jq &> /dev/null; then
     jq_version="1.6"
     echo "Installing jq version $jq_version"
+
+    if [ "$(uname -m)" == "x86_64" ]; then
+      arch="64"
+    else
+      arch="32"
+    fi
+
     wget -qO jq "https://github.com/stedolan/jq/releases/download/jq-$jq_version/jq-linux$arch"
     chmod +x jq
     "$SUDO" cp jq /usr/local/bin
