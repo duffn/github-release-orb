@@ -33,7 +33,9 @@ workflows:
                 - main
 ```
 
-- Now, you will get a minor version bump, new tag, and GitHub release on every merge to `main`.
+- Specify `[semver:<major|minor|patch>]` in your commit message to trigger a new release.
+  - The org will extract the SemVer from your commit message and bump the GitHub version accordingly.
+  - Add `[semver:skip]` to your commit message to skip publishing a release or just leave `[semver:<anything>]` out entirely.
 - See the examples and documentation in [the CircleCI orb registry](https://circleci.com/developer/orbs/orb/duffn/github-release) for more.
 
 ## Setup
