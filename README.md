@@ -13,7 +13,7 @@ A CircleCI orb to automatically create releases for a GitHub repository.
 version: 2.1
 
 orbs:
-  github-release: duffn/github-release@<version>
+  github-release: duffn/github-release@0.1.0
 
 jobs:
   release:
@@ -34,14 +34,14 @@ workflows:
 ```
 
 - Specify `[semver:<major|minor|patch>]` in your commit message to trigger a new release.
-  - The org will extract the SemVer from your commit message and bump the GitHub version accordingly.
+  - The orb will extract the SemVer from your commit message and bump the GitHub version accordingly.
   - Add `[semver:skip]` to your commit message to skip publishing a release or just leave `[semver:<increment>]` out entirely.
-    - Note that when merging a PR in GitHub, you can easily add or change `[semver:<increment]` in the UI when creating a merge commit.
+    - Note that when merging a PR in GitHub, you can easily add or change `[semver:<increment>]` in the UI when creating a merge commit. This may be the easiest way to ensure that the orb finds the correct commit message when merging a PR.
 - See the examples and documentation in [the CircleCI orb registry](https://circleci.com/developer/orbs/orb/duffn/github-release) for more.
 
 ## Setup
 
-Usage of the orb requires some additional setup.
+Use of this orb requires some additional setup.
 
 - The orb requires [`curl`](https://curl.se/). Ensure that your Docker image or executor has `curl` installed.
 - You must set the `GITHUB_TOKEN` environment variable.

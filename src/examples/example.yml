@@ -1,13 +1,22 @@
 description: >
-  Sample example description.
-# Provide a use-case based example for using this orb.
-# Everything in the `usage` section will be displayed in the orb registry.
-# Comments are not retained.
+  Create a GitHub release when a commit is pushed to the `main` branch and the commit
+  message contains `[semver:<major|minor|patch>]`.
 usage:
   version: 2.1
   orbs:
-    <orb-name>: <namespace>/<orb-name>@1.2.3
+    github-release: duffn/github-release@0.1.0
+  jobs:
+    release:
+      docker:
+        - image: cimg/base:stable
+      steps:
+        - checkout
+        - github-release/release
   workflows:
-    use-my-orb:
+    release:
       jobs:
-        - <orb-name>/<job-name>
+        - release:
+            filters:
+              branches:
+                only:
+                  - main

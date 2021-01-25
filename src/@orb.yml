@@ -1,7 +1,7 @@
 version: 2.1
 
 description: >
-  Create tags and releases in GitHub.
+  Create releases in GitHub and bump SemVer versions based upon commit messages.
 
 display:
   home_url: "https://github.com/duffn/github-release-orb"
