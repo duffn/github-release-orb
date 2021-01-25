@@ -1,41 +1,48 @@
-# Orb Project Template
+# github-release-orb
 
-[![CircleCI Build Status](https://circleci.com/gh/duffn/github-release-orb.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/duffn/github-release-orb) [![CircleCI Orb Version](https://img.shields.io/badge/endpoint.svg?url=https://badges.circleci.io/orb/duffn/github-release)](https://circleci.com/orbs/registry/orb/duffn/github-release) [![GitHub License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/duffn/github-release-orb/master/LICENSE) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/orbs)
+[![CircleCI Build Status](https://circleci.com/gh/duffn/github-release-orb.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/duffn/github-release-orb) [![CircleCI Orb Version](https://img.shields.io/badge/endpoint.svg?url=https://badges.circleci.io/orb/duffn/github-release)](https://circleci.com/orbs/registry/orb/duffn/github-release) [![GitHub License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/duffn/github-release-orb/master/LICENSE)
 
+A CircleCI orb to automatically create releases for a GitHub repository.
 
+## Usage
 
-A starter template for orb projects. Build, test, and publish orbs automatically on CircleCI with [Orb-Tools](https://circleci.com/orbs/registry/orb/circleci/orb-tools).
+- Add the orb to your CircleCI `config.yml`.
+  - Find the latest version in [the CircleCI orb registry](https://circleci.com/developer/orbs/orb/duffn/github-release).
 
-Additional READMEs are available in each directory.
+```yaml
+version: 2.1
 
+orbs:
+  github-release: duffn/github-release@0.1.0
 
+jobs:
+  release:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - github-release/release
 
-## Resources
+workflows:
+  release:
+    jobs:
+      - release:
+          filters:
+            branches:
+              only:
+                - main
+```
 
-[CircleCI Orb Registry Page](https://circleci.com/orbs/registry/orb/duffn/github-release-orb) - The official registry page of this orb for all versions, executors, commands, and jobs described.
-[CircleCI Orb Docs](https://circleci.com/docs/2.0/orb-intro/#section=configuration) - Docs for using and creating CircleCI Orbs.
+- Specify `[semver:<major|minor|patch>]` in your commit message to trigger a new release.
+  - The orb will extract the SemVer from your commit message and bump the GitHub version accordingly.
+  - Add `[semver:skip]` to your commit message to skip publishing a release or just leave `[semver:<increment>]` out entirely.
+    - Note that when merging a PR in GitHub, if you [squash](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-request-merges#squash-and-merge-your-pull-request-commits) your PR when merging, the title of your PR will the the title of your commit message! So, open your PR with a title like `[semver:minor] New minor release`, squash your PR when merging, and the orb will pick up that commit message and create a GitHub release.
+- See the examples and documentation in [the CircleCI orb registry](https://circleci.com/developer/orbs/orb/duffn/github-release) for more.
 
-### How to Contribute
+## Setup
 
-We welcome [issues](https://github.com/duffn/github-release-orb/issues) to and [pull requests](https://github.com/duffn/github-release-orb/pulls) against this repository!
+Use of this orb requires some additional setup.
 
-### How to Publish
-* Create and push a branch with your new features.
-* When ready to publish a new production version, create a Pull Request from _feature branch_ to `master`.
-* The title of the pull request must contain a special semver tag: `[semver:<segement>]` where `<segment>` is replaced by one of the following values.
-
-| Increment | Description|
-| ----------| -----------|
-| major     | Issue a 1.0.0 incremented release|
-| minor     | Issue a x.1.0 incremented release|
-| patch     | Issue a x.x.1 incremented release|
-| skip      | Do not issue a release|
-
-Example: `[semver:major]`
-
-* Squash and merge. Ensure the semver tag is preserved and entered as a part of the commit message.
-* On merge, after manual approval, the orb will automatically be published to the Orb Registry.
-
-
-For further questions/comments about this or other orbs, visit the Orb Category of [CircleCI Discuss](https://discuss.circleci.com/c/orbs).
-
+- The orb requires [`curl`](https://curl.se/). Ensure that your Docker image or executor has `curl` installed.
+- You must set the `GITHUB_TOKEN` environment variable.
+  - This environment variable must have [permissions to create releases in your repository](https://github.com/settings/tokens/new?description=CircleCI%20GitHub%20token&scopes=repo).

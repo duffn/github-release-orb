@@ -1,0 +1,15 @@
+description: >
+  This command creates a GitHub release.
+
+parameters:
+  changelog:
+    type: boolean
+    default: true
+    description: Include a changelog in the body of your GitHub release.
+
+steps:
+  - run:
+      environment:
+        CHANGELOG: "<< parameters.changelog >>"
+      name: Create a GitHub release.
+      command: << include(scripts/release.sh) >>
