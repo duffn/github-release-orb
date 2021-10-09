@@ -13,7 +13,7 @@ A CircleCI orb to automatically create releases for a GitHub repository.
 version: 2.1
 
 orbs:
-  github-release: duffn/github-release@0.1.0
+  github-release: duffn/github-release@0.1
 
 jobs:
   release:
