@@ -9,7 +9,15 @@ main() {
   fi
   new_tag=$(semver bump "$semver_increment" "$last_tag")
 
-  release_github "$new_tag"
+  if [[ "$last_tag" == v* ]]; then
+    tag_prefix="v"
+  elif  [[ "$last_tag" == V* ]]; then
+    tag_prefix="V"
+  else
+    tag_prefix=""
+  fi
+
+  release_github "${tag_prefix}${new_tag}"
 }
 
 release_github() {
