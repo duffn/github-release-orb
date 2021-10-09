@@ -19,7 +19,11 @@ release_github() {
 
   release_changelog=""
   if [ "$CHANGELOG" == "1" ]; then
-    release_changelog=$(git log --pretty=format:'* %s (%h)' "$last_tag"..HEAD)
+    if [ "$last_tag" == "0.0.0" ]; then
+      release_changelog=$(git log --pretty=format:'* %s (%h)' HEAD)
+    else
+      release_changelog=$(git log --pretty=format:'* %s (%h)' "$last_tag"..HEAD)
+    fi
   fi
 
   json=$(jq -n \
