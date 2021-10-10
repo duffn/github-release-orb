@@ -6,10 +6,16 @@ parameters:
     type: boolean
     default: true
     description: Include a changelog in the body of your GitHub release
+  initial-version-prefix:
+    type: string
+    default: v
+    description: |
+      If the first tag for a repository is created by this orb, prefix it with this string.
 
 steps:
   - run:
       environment:
         CHANGELOG: "<< parameters.changelog >>"
+        INITIAL_VERSION_PREFIX: "<< parameters.initial-version-prefix >>"
       name: Create a GitHub release
       command: << include(scripts/release.sh) >>
