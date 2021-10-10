@@ -3,7 +3,7 @@ main() {
   local new_tag
 
   if [ -z "$(git tag)" ]; then
-    last_tag="v0.0.0"
+    last_tag="${INITIAL_VERSION_PREFIX}0.0.0"
   else
     last_tag=$(git describe --tags --abbrev=0)
   fi
@@ -27,7 +27,7 @@ release_github() {
 
   release_changelog=""
   if [ "$CHANGELOG" == "1" ]; then
-    if [ "$last_tag" == "v0.0.0" ]; then
+    if [ "$last_tag" == "${INITIAL_VERSION_PREFIX}0.0.0" ]; then
       release_changelog=$(git log --pretty=format:'* %s (%h)' HEAD)
     else
       release_changelog=$(git log --pretty=format:'* %s (%h)' "$last_tag"..HEAD)
