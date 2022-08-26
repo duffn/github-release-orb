@@ -63,7 +63,7 @@ release_github() {
 get_semver_increment() {
   local commit_subject
   commit_subject=$(git log -1 --pretty=%s.)
-  semver_increment=$(echo "$commit_subject" | sed -En 's/.*\[semver:(major|minor|patch|skip)\].*/\1/p')
+  semver_increment=$(echo "${commit_subject,,}" | sed -En 's/.*\[semver:(major|minor|patch|skip)\].*/\1/p')
 
   echo "Commit subject: $commit_subject"
   echo "SemVer increment: $semver_increment"
