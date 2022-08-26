@@ -64,14 +64,19 @@ get_semver_increment() {
   local commit_subject
   commit_subject=$(git log -1 --pretty=%s.)
   semver_increment=$(echo "${commit_subject,,}" | sed -En 's/.*\[semver:(major|minor|patch|skip)\].*/\1/p')
+  if [ -z "$semver_increment" ] && [ $INCREMENT_BY_DEFAULT == "1" ]; then
+    semver_increment=patch
+  fi
 
   echo "Commit subject: $commit_subject"
   echo "SemVer increment: $semver_increment"
 
-  if [ -z "$semver_increment" ]; then
-    echo "Commit subject did not indicate which SemVer increment to make."
+  if [ -z "$semver_increment" ] && [ $INCREMENT_BY_DEFAULT == "0" ]; then
+    echo "Commit subject did not indicate which SemVer increment to make and increment_by_default is not set to true."
     echo "To create the tag and release, you can ammend the commit or push another commit with [semver:INCREMENT] in the subject where INCREMENT is major, minor, patch."
     echo "Note: To indicate intention to skip, include [semver:skip] in the commit subject instead."
+  elif [ $INCREMENT_BY_DEFAULT == "1" ]; then
+    echo  "Release is configured to always perform at least a patch release unless skip is specified"
   elif [ "$semver_increment" == "skip" ]; then
     echo "SemVer in commit indicated to skip release."
   fi

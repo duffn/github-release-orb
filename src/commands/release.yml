@@ -6,6 +6,10 @@ parameters:
     type: boolean
     default: true
     description: Include a changelog in the body of your GitHub release
+  increment_by_default:
+    type: boolean
+    default: false
+    description: Perfom a patch increment if no setting is provided
   initial-version-prefix:
     type: string
     default: v
@@ -16,6 +20,7 @@ steps:
   - run:
       environment:
         CHANGELOG: "<< parameters.changelog >>"
+        INCREMENT_BY_DEFAULT: "<< parameters.increment_by_default >>"
         INITIAL_VERSION_PREFIX: "<< parameters.initial-version-prefix >>"
       name: Create a GitHub release
       command: << include(scripts/release.sh) >>
