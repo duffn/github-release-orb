@@ -1,3 +1,7 @@
+# Unmaintained
+
+_This repository is archived and unmaintained. Use at your own risk._
+
 # github-release-orb
 
 [![CircleCI Build Status](https://circleci.com/gh/duffn/github-release-orb.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/duffn/github-release-orb) ![Orb Version Badge](https://badges.circleci.com/orbs/duffn/github-release.svg) [![GitHub License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/duffn/github-release-orb/master/LICENSE)
